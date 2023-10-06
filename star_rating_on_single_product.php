@@ -19,7 +19,7 @@ function add_product_reviews_shortcode_after_price() {
         
         echo '<div class="wcpr-overall-rating-right-total">';
         if ($review_count === 0) {
-            echo 'No reviews';
+            echo ' No reviews';
         } else {
             echo '(' . $review_count . ' review' . ($review_count === 1 ? ')' : 's)');
         }
