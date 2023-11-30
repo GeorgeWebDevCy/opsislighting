@@ -1,4 +1,3 @@
-<?php
 add_action('woocommerce_single_product_summary', 'add_product_reviews_shortcode_after_price', 15);
 
 function add_product_reviews_shortcode_after_price() {
@@ -21,10 +20,28 @@ function add_product_reviews_shortcode_after_price() {
         if ($review_count === 0) {
             echo ' No reviews';
         } else {
-            echo '(' . $review_count . ' review' . ($review_count === 1 ? ')' : 's)');
+			    echo '&nbsp;(' . $review_count . ' review' . ($review_count === 1 ? ')' : 's)');
+            //echo ' (' . $review_count . ' review' . ($review_count === 1 ? ')' : 's)');
         }
         echo '</div>';
         
         echo '</div>';
+    }
+}
+
+// Move scripts to the footer
+remove_action('wp_head', 'wp_print_scripts');
+remove_action('wp_head', 'wp_print_head_scripts', 9);
+remove_action('wp_head', 'wp_enqueue_scripts', 1);
+add_action('wp_footer', 'wp_print_scripts', 5);
+add_action('wp_footer', 'wp_enqueue_scripts', 5);
+add_action('wp_footer', 'wp_print_head_scripts', 5);
+
+// Ensure WooCommerce scripts are loaded
+add_action('wp_enqueue_scripts', 'custom_load_scripts');
+
+function custom_load_scripts() {
+    if (function_exists('is_product') && is_product()) {
+        wp_enqueue_script('wc-add-to-cart-variation');
     }
 }
